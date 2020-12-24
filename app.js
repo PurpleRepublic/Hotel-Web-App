@@ -6,6 +6,7 @@ var path = require('path')
 //set propertis of the application
 app.set('port', 3000);
 
+
 //set up static middleware
 //check to see if a route is matched by anyfiles in the public folder.
 //if match deliver file to browser without adding extra routes. 
