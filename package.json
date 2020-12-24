@@ -1,7 +1,7 @@
 {
-  "name": "mean-app",
+  "name": "hotel-web-app",
   "version": "1.0.0",
-  "description": "MEAN stack web app",
+  "description": "static MEAN stack web app",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PurpleRepublic/MEAN-stack-class-project.git"
+    "url": "git+https://github.com/PurpleRepublic/Hotel-Web-App.git"
   },
   "keywords": [
     "mean"
@@ -17,9 +17,9 @@
   "author": "Tyler Stewart",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/PurpleRepublic/MEAN-stack-class-project/issues"
+    "url": "https://github.com/PurpleRepublic/Hotel-Web-App/issues"
   },
-  "homepage": "https://github.com/PurpleRepublic/MEAN-stack-class-project#readme",
+  "homepage": "https://github.com/PurpleRepublic/Hotel-Web-App#readme",
   "dependencies": {
     "express": "^4.17.1"
   },
