@@ -1,0 +1,29 @@
+{
+  "name": "mean-app",
+  "version": "1.0.0",
+  "description": "MEAN stack web app",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PurpleRepublic/MEAN-stack-class-project.git"
+  },
+  "keywords": [
+    "mean"
+  ],
+  "author": "Tyler Stewart",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PurpleRepublic/MEAN-stack-class-project/issues"
+  },
+  "homepage": "https://github.com/PurpleRepublic/MEAN-stack-class-project#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "mocka": "^0.0.1"
+  }
+}
