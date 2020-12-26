@@ -1,8 +1,8 @@
 //initialize and declare 
-var express = require('express');
-var app = express();
-var path = require('path');
-var routes = require('./api/routes');
+const express = require('express');
+const app = express();
+const path = require('path');
+const routes = require('./api/routes');
 
 //set properties of the application
 app.set('port', 3000);
