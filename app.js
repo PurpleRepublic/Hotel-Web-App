@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const routes = require('./api/routes');
+const bodyParser = require('body-parser');
 
 //set properties of the application
 app.set('port', 3000);
@@ -17,6 +18,8 @@ app.use((req,res, next) => {
 //check to see if a route is matched by anyfiles in the public folder.
 //if match deliver file to browser without adding extra routes. 
 app.use(express.static(path.join(__dirname,'public')));
+
+app.use(bodyParser.urlencoded({ extended : false}));
 
 app.use('/',routes);
 

@@ -12,7 +12,9 @@ router
     .route('/hotels/:hotelID')
     .get(ctrHotels.hotelgetONE);
 
-
+router
+	.route('/hotels/test')
+	.post(ctrHotels.hotelsAddOne);
 
 //export the instatiated router
 module.exports = router;
