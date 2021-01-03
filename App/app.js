@@ -1,4 +1,5 @@
 //initialize and declare 
+const MongoClient = require('mongodb').MongoClient;
 const express = require('express');
 const app = express();
 const path = require('path');
