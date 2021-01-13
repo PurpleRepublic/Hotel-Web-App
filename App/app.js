@@ -1,5 +1,5 @@
 //initialize and declare 
-const MongoClient = require('mongodb').MongoClient;
+require('./api/data/dbconnections').open();
 const express = require('express');
 const app = express();
 const path = require('path');
