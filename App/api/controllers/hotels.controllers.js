@@ -1,12 +1,13 @@
+const dbconn = require('../data/dbconnections.js');
 //hardcoded list of hotel data as json
 const hotelData = require('../data/hotel-data.json');
 
 //export controler functions
 //responds with a slice of hotel data
 module.exports.hotelgetALL = (req,res) => {
-    console.log("GET the hotels");
-    console.log(req.query);
-    //use these values to slice hotel data aray
+    var db = dbconn.get();
+    var collection = db.collection('Hotels');
+
     var offset = 0;
     var count = 5;
 
@@ -19,12 +20,19 @@ module.exports.hotelgetALL = (req,res) => {
     if(req.query && req.query.count){
         count = parseInt(req.query.count,10);
     };
-    
-    var returnData = hotelData.slice(offset,offset + count);
 
-    res
-        .status(200)
-        .json({ returnData });
+    collection
+        .find()
+        .skip(offset)
+        .limit(count)
+        .toArray((err, docs) => {
+            if(err){
+            console.log("We found an error", err)
+            }
+            res
+                .status(200)
+                .json(docs)
+        })
 };
 
 //paramterizes hotels and responds with one section of hotel data
