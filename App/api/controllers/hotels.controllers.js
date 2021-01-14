@@ -1,3 +1,5 @@
+const ObjectID = require('mongodb').ObjectID;
+//Data from MongoDB Hotels collection
 const dbconn = require('../data/dbconnections.js');
 //hardcoded list of hotel data as json
 const hotelData = require('../data/hotel-data.json');
@@ -5,8 +7,8 @@ const hotelData = require('../data/hotel-data.json');
 //export controler functions
 //responds with a slice of hotel data
 module.exports.hotelgetALL = (req,res) => {
-    var db = dbconn.get();
-    var collection = db.collection('Hotels');
+    const db = dbconn.get();
+    const collection = db.collection('Hotels');
 
     var offset = 0;
     var count = 5;
@@ -37,19 +39,44 @@ module.exports.hotelgetALL = (req,res) => {
 
 //paramterizes hotels and responds with one section of hotel data
 module.exports.hotelgetONE = (req,res) => {
+    const db = dbconn.get();
+    const collection = db.collection('Hotels');
+
     const hotelID = req.params.hotelID;
-    const thisHotel = hotelData[hotelID];
     console.log("GET hotel ID: ", hotelID);
-    res
-        .status(200)
-        .json({ thisHotel });
+
+    collection
+        .findOne({
+            _id : ObjectID(hotelID)
+        }, (err,docs) => {
+            res
+                .status(200)
+                .json(docs);
+        });
 };
 
 module.exports.hotelsAddOne = (req,res) => {
-    console.log("POST new hotel");
-    console.log(req.body);
-    res
-        .status(200)
-        .json(req.body);
+    const db = dbconn.get();
+    const collection = db.collection('Hotels');
+    var newHotel;
 
+    if(req.body && req.body.stars && req.body.name){
+        newHotel = req.body;
+        newHotel.stars = parseInt(req.body.stars, 10);
+        console.log("POST new hotel");
+        
+        collection.insertOne(newHotel,(err,response) => {
+            console.log(response);
+            console.log(response.ops);
+            res
+                .status(201)
+                .json(response.ops);
+        });
+    }
+    else {
+        console.log("Required Data is Missing");
+        res 
+            .status(400)
+            .json({message : "Required Data Missing from Body"});
+    }
 };
