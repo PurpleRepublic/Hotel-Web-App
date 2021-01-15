@@ -4,7 +4,25 @@ const Hotel = mongoose.model('Hotel');
 var runGeoQuery = (req, res) => {
     var lat = parseFloat(req.query.lat);
     var lng = parseFloat(req.query.lng);
-    
+
+    Hotel
+        .aggregate([
+        {
+            $geoNear : {
+            near : { type : "Point", coordinates : [lng, lat]},
+            distanceField : "dist.calculated",
+            spherical : true,
+            maxDistance : 2000,
+            }
+        },
+        {$limit : 5}
+        ],(err, results, stats) => {
+            console.log('Geo results ', results);
+            res
+              .status(200)
+              .json(results);
+          }
+        )
 };
 
 
@@ -19,7 +37,6 @@ module.exports.hotelgetALL = (req,res) => {
     if(req.query && req.query.lat && req.query.lng){
         runGeoQuery(req, res);
         return;
-
     };
 
     //is there a query?, is there an offset or count? 
