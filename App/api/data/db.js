@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const dburl = "mongodb://localhost:27017";
+const dburl = "mongodb://localhost:27017/MEANHotel";
 
-mongoose.connect(dburl, { useNewUrlParser: true });
+mongoose.connect(dburl, { useNewUrlParser: true }, { useUnifiedTopology: true });
 
 mongoose.connection.on('connected', () => {
     console.log('Mongoose connected to ' + dburl);

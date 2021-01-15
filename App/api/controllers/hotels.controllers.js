@@ -1,17 +1,26 @@
-const ObjectID = require('mongodb').ObjectID;
-//Data from MongoDB Hotels collection
-const dbconn = require('../data/dbconnections.js');
-//hardcoded list of hotel data as json
-const hotelData = require('../data/hotel-data.json');
+const mongoose = require('mongoose');
+const Hotel = mongoose.model('Hotel');
+
+var runGeoQuery = (req, res) => {
+    var lat = parseFloat(req.query.lat);
+    var lng = parseFloat(req.query.lng);
+    
+};
+
+
 
 //export controler functions
 //responds with a slice of hotel data
 module.exports.hotelgetALL = (req,res) => {
-    const db = dbconn.get();
-    const collection = db.collection('Hotels');
 
     var offset = 0;
     var count = 5;
+    
+    if(req.query && req.query.lat && req.query.lng){
+        runGeoQuery(req, res);
+        return;
+
+    };
 
     //is there a query?, is there an offset or count? 
     //take that and set it ass offset and count in our controler.
@@ -23,32 +32,27 @@ module.exports.hotelgetALL = (req,res) => {
         count = parseInt(req.query.count,10);
     };
 
-    collection
-        .find()
-        .skip(offset)
-        .limit(count)
-        .toArray((err, docs) => {
-            if(err){
-            console.log("We found an error", err)
-            }
-            res
-                .status(200)
-                .json(docs)
-        })
+    Hotel
+    .find()
+    .skip(offset)
+    .limit(count)
+    .exec((err, hotels) => {
+        console.log('Found Hotels ', hotels.length);
+        res
+            .json(hotels);
+    });
+
 };
 
 //paramterizes hotels and responds with one section of hotel data
-module.exports.hotelgetONE = (req,res) => {
-    const db = dbconn.get();
-    const collection = db.collection('Hotels');
+module.exports.hotelGetONE = (req,res) => {
 
     const hotelID = req.params.hotelID;
     console.log("GET hotel ID: ", hotelID);
 
-    collection
-        .findOne({
-            _id : ObjectID(hotelID)
-        }, (err,docs) => {
+    Hotel
+        .findById(hotelID)
+        .exec((err,docs) => {
             res
                 .status(200)
                 .json(docs);
