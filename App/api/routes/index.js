@@ -8,23 +8,23 @@ const ctrReview = require("../controllers/reviews.controllers.js");
 //GET all hotels
 router
     .route('/hotels')
-    .get(ctrHotels.hotelgetALL);
+    .get(ctrHotels.hotelgetALL)
+    .post(ctrHotels.hotelsAddOne);
 
 //route for hotel id parameter.
 //GET one hotel
 router
     .route('/hotels/:hotelID')
     .get(ctrHotels.hotelGetONE);
-
-router
-	.route('/hotels/test')
-    .post(ctrHotels.hotelsAddOne);
     
 //REVIEWS ROUTES//
 //GET all reviews for specific hotel//
+//POST a review
 router
     .route('/hotels/:hotelID/reviews')
     .get(ctrReview.reviewsGetAll)
+    .post(ctrReview.reviewsAddOne)
+
 //GET a specific review for a hotel
 router
     .route('/hotels/:hotelID/reviews/:reviewID')

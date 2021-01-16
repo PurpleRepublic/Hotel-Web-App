@@ -102,6 +102,8 @@ module.exports.hotelGetONE = (req,res) => {
     Hotel
         .findById(hotelID)
         .exec((err,doc) => {
+            //need new way to validate ObjectID's this doesn't matter if its correct
+            //or incorrect format. It's unabel to distinguish 404 and 400 errors
             var isValid = mongoose.Types.ObjectId.isValid(hotelID);
             var response = {
                 status : 200,
@@ -122,34 +124,41 @@ module.exports.hotelGetONE = (req,res) => {
             });
 };
 
-module.exports.hotelsAddOne = (req,res) => {
-    const db = dbconn.get();
-    const collection = db.collection('Hotels');
-    var newHotel;
+//helper method to split array
+var _splitArray = (input) => {
+    var output;
+    if(input && input.length > 0){
+        output = input.split(";");
+        return output
+    }
+    output = [];
+    return output;
+ }
 
-    if(req.body && req.body.stars && req.body.name){
-        newHotel = req.body;
-        newHotel.stars = parseInt(req.body.stars, 10);
-        console.log("POST new hotel");
-        
-        collection.insertOne(newHotel,(err,response) => {
-            console.log(response);
-            console.log(response.ops);
+module.exports.hotelsAddOne = (req,res) => {
+    Hotel
+        .create({
+            name : req.body.name,
+            description : req.body.description,
+            stars : parseInt(req.body.stars,10),
+            services : _splitArray(req.body.services),
+            photos : _splitArray(req.body.photos),
+            currency : req.body.currency,
+            location : {
+                address : req.body.address,
+                coordinates : [parseFloat(req.body.lng), parseFloat(req.body.lat)]
+            }
+        },(err,hotel) => {
             if(err){
                 res
-                    .status(500)
+                    .status(400)
                     .json(err)
             }
-            res
+            console.log("Hotel created ", hotel);
+            res 
+                //resource has been created 201
                 .status(201)
-                .json(response.ops);
+                .res(hotel)
+
         });
-    }
-    else {
-        console.log("Required Data is Missing");
-        res 
-            .status(404)
-            .json({message : "Required Data Missing from Body"});
-            return;
-    }
 };
