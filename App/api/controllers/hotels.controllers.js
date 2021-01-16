@@ -162,3 +162,78 @@ module.exports.hotelsAddOne = (req,res) => {
 
         });
 };
+
+module.exports.hotelUpdateONE = (req,res) => { 
+    const hotelID = req.params.hotelID;
+    console.log("GET hotel ID: ", hotelID);
+
+    Hotel
+        .findById(hotelID)
+        //exclude reviews and rooms
+        .select("-reviews -rooms")
+        .exec((err,doc) => {
+            //need new way to validate ObjectID's this doesn't matter if its correct
+            //or incorrect format. It's unabel to distinguish 404 and 400 errors
+            var isValid = mongoose.Types.ObjectId.isValid(hotelID);
+            var response = {
+                status : 200,
+                message : doc
+            }
+            if(!isValid){
+                response.status = 404;
+                response.message = {"message" : "Hotel ID not found"}
+            }
+            else if(err){
+                console.log("Error finding hotel");
+                response.status = 500;
+                response.message = err;
+            }
+            if(response.status != 200){
+            res
+                .status(response.status)
+                .json(response.message);
+            }
+            else{
+                doc.name = req.body.name,
+                doc.description = req.body.description,
+                doc.stars = parseInt(req.body.stars,10),
+                doc.services = _splitArray(req.body.services),
+                doc.photos = _splitArray(req.body.photos),
+                doc.currency = req.body.currency,
+                doc.location = {
+                    address : req.body.address,
+                    coordinates : [parseFloat(req.body.lng), parseFloat(req.body.lat)]
+                };
+            doc.save((err,updatedHotel) => {
+                if(err){
+                    res
+                        .status(500)
+                        .json(err)
+                }
+                else{
+                    res
+                        .status(204)
+                        .json()
+                }
+            });
+            }
+        })
+};
+
+
+module.exports.hotelDeleteONE = (req,res) => {
+    const hotleID = req.params.hotelID;
+    Hotel
+        .findByIdAndRemove(hotelID)
+        .exec((err,hotel) => {
+            if(err){
+                res
+                    .status(404)
+                    .json(err)
+            }
+            console.log("Hotel ",hotelID, " has been deleted");
+            res
+                .status(204)
+                .json()
+        })
+}

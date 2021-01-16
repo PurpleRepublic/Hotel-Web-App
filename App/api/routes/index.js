@@ -15,7 +15,9 @@ router
 //GET one hotel
 router
     .route('/hotels/:hotelID')
-    .get(ctrHotels.hotelGetONE);
+    .get(ctrHotels.hotelGetONE)
+    .put(ctrHotels.hotelUpdateONE) 
+    .delete(ctrHotels.hotelDeleteONE)
     
 //REVIEWS ROUTES//
 //GET all reviews for specific hotel//
@@ -26,9 +28,12 @@ router
     .post(ctrReview.reviewsAddOne)
 
 //GET a specific review for a hotel
+//PUT sends entire review document back after editing
 router
     .route('/hotels/:hotelID/reviews/:reviewID')
     .get(ctrReview.reviewsGetOne)
+    .put(ctrReview.reviewsUpdateOne)
+    .delete(ctrReview.reviewsDeleteOne)
 
 //export the instatiated router
 module.exports = router;
