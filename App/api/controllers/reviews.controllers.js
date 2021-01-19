@@ -169,7 +169,7 @@ module.exports.reviewsUpdateOne = function(req, res) {
 module.exports.reviewsDeleteOne = (req,res) => {
     var hotelId = req.params.hotelId;
     var reviewId = req.params.reviewId;
-    console.log('PUT reviewId ' + reviewId + ' for hotelId ' + hotelId);
+    console.log('Delete reviewId ' + reviewId + ' for hotelId ' + hotelId);
   
     Hotel
       .findById(hotelId)

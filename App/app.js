@@ -19,6 +19,7 @@ app.use((req,res, next) => {
 //check to see if a route is matched by anyfiles in the public folder.
 //if match deliver file to browser without adding extra routes. 
 app.use(express.static(path.join(__dirname,'public')));
+app.use("/node_modules", express.static(__dirname + "/node_modules"));
 
 app.use(bodyParser.urlencoded({ extended : false}));
 
